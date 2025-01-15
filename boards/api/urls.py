@@ -1,6 +1,6 @@
 from django.urls import path
-from boards.api.api import BoardAPIView
+from boards.api.api import board_api_view
 
 urlpatterns = [
-    path('board/', BoardAPIView.as_view(), name = 'board_api'),
+    path('board/', board_api_view, name = 'board_api'),
 ]

@@ -1,11 +1,12 @@
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework.views import APIView
 from boards.models import Board
 from boards.api.serializers import BoardSerializer
 
-class BoardAPIView(APIView):
+@api_view(['GET'])
+def board_api_view(request):
     
-    def get(self, request):
+    if request.method == 'GET':
         boards = Board.objects.all()
         board_serializer = BoardSerializer(boards, many = True)
         return Response(board_serializer.data)
