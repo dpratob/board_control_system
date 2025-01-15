@@ -14,7 +14,7 @@ class Board(models.Model):
         db_table = 'board'
 
     def __str__(self):
-        return f"Board {self.id} at {self.location} - {self.group}"
+        return f"Board {self.id} ({self.location})"
 
 
 class BoardFeature(models.Model):
