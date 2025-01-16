@@ -7,6 +7,7 @@ class Board(models.Model):
     is_active = models.BooleanField(default=True)
     location = models.CharField(max_length=10)
     section = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(6)], default=1)
+    serial_number = models.CharField(max_length=8, unique=True)
     
     class Meta:
         verbose_name = 'Board Master'
@@ -21,7 +22,6 @@ class BoardFeature(models.Model):
     brand = models.CharField(max_length=6)
     model = models.CharField(max_length=10)
     resolution = models.CharField(max_length=9, help_text="e.g., ____x___")
-    serial_number = models.CharField(max_length=8, unique=True)
     size_inches = models.DecimalField(validators=[MinValueValidator(5)], max_digits=3, decimal_places=1)
 
     class Meta:

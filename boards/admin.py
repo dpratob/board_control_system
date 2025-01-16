@@ -3,13 +3,13 @@ from boards.models import Board, BoardFeature, BoardPublication, Event, Group, I
 
 @admin.register(Board)
 class AdminBoards(admin.ModelAdmin):
-    list_display = ('id', 'feature', 'group', 'is_active', 'location', 'section',)
+    list_display = ('id', 'feature', 'group', 'is_active', 'location', 'section', 'serial_number',)
     # list_filter = ('',)
     # search_fields = ('',)
 
 @admin.register(BoardFeature)
 class AdminBoardFeature(admin.ModelAdmin):
-    list_display = ('id', 'brand', 'model', 'resolution', 'serial_number', 'size_inches',)
+    list_display = ('id', 'brand', 'model', 'resolution', 'size_inches',)
 
 @admin.register(BoardPublication)
 class AdminBoardPublication(admin.ModelAdmin):
