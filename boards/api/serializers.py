@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from boards.models import Board, BoardFeature, BoardPublication, Event, Group, Interaction, Publication, PublicationType, Repetition, User
+from boards.models import Board, BoardFeature, BoardPublication, Event, Group, Repetition, User
 
 class BoardSerializer(serializers.ModelSerializer):
     class Meta:
@@ -24,21 +24,6 @@ class EventSerializer(serializers.ModelSerializer):
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
-        fields = '__all__'
-
-class InteractionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Interaction
-        fields = '__all__'
-
-class PublicationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Publication
-        fields = '__all__'
-
-class PublicationTypeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = PublicationType
         fields = '__all__'
 
 class RepetitionSerializer(serializers.ModelSerializer):

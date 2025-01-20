@@ -5,9 +5,6 @@ from boards.api.api import (
     board_publication_api_view, board_publication_detail_api_view,
     event_api_view, event_detail_api_view,
     group_api_view, group_detail_api_view,
-    interaction_api_view, interaction_detail_api_view,
-    publication_api_view, publication_detail_api_view,
-    publication_type_api_view, publication_type_detail_api_view,
     repetition_api_view, repetition_detail_api_view,
     user_api_view, user_detail_api_view
 )
@@ -33,18 +30,6 @@ urlpatterns = [
     # Group API
     path('group/', group_api_view, name = 'group_api'),
     path('group/<int:pk>/', group_detail_api_view, name = 'group_detail_api'),
-
-    # Interaction API
-    path('interaction/', interaction_api_view, name = 'interaction_api'),
-    path('interaction/<int:pk>/', interaction_detail_api_view, name = 'interaction_detail_api'),
-
-    # Publication API
-    path('publication/', publication_api_view, name = 'publication_api'),
-    path('publication/<int:pk>/', publication_detail_api_view, name = 'publication_detail_api'),
-
-    # Publication Type API
-    path('publication_type/', publication_type_api_view, name = 'publication_type_api'),
-    path('publication_type/<int:pk>/', publication_type_detail_api_view, name = 'publication_type_detail_api'),
 
     # Repetition API
     path('repetition/', repetition_api_view, name = 'repetition_api'),

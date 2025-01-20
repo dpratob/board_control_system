@@ -2,8 +2,8 @@ from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Board(models.Model):
-    feature = models.ForeignKey('BoardFeature', on_delete=models.CASCADE, related_name='boards_with_feature', default='')
-    group = models.ForeignKey('Group', on_delete=models.CASCADE, related_name='boards_in_group', default='')
+    feature = models.ForeignKey('BoardFeature', on_delete=models.CASCADE, related_name='boards_with_feature')
+    group = models.ForeignKey('Group', on_delete=models.CASCADE, related_name='boards_in_group')
     is_active = models.BooleanField(default=True)
     location = models.CharField(max_length=10)
     section = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(6)], default=1)
@@ -34,19 +34,23 @@ class BoardFeature(models.Model):
 
 
 class BoardPublication(models.Model):
-    board = models.ForeignKey(Board, on_delete=models.CASCADE, related_name='board_publications')
-    publication = models.ForeignKey('Publication', on_delete=models.CASCADE, related_name='publication_on_boards', default='')
+    board = models.ForeignKey(Board, on_delete=models.CASCADE, related_name='publications_in_board')
+    event = models.ForeignKey('Event', on_delete=models.CASCADE, related_name='publications_with_event')
+    user = models.ForeignKey('User', on_delete=models.CASCADE, related_name='publications_by_user')
+    address = models.FileField(upload_to='publication_files/')
     date = models.DateField(help_text="e.g., yyyy-mm-dd")
-    time = models.TimeField(help_text="e.g., HH:mm:ss")
+    description = models.CharField(max_length=27)
     duration = models.PositiveIntegerField(help_text="e.g., ___ min")
-
+    interaction = models.URLField(max_length=18, help_text="e.g., http://example.com")
+    time = models.TimeField(help_text="e.g., HH:mm:ss")
+    
     class Meta:
         verbose_name = "Board Publication"
         verbose_name_plural = "Board Publications"
         db_table = "board_publication"
 
     def __str__(self):
-        return f"Publication {self.publication.id} on {self.board.group} at {self.date} {self.time}"
+        return f"Publication {self.id} on {self.board.group} at {self.date} {self.time}"
 
 
 class Event(models.Model):
@@ -77,55 +81,24 @@ class Group(models.Model):
         return f"{self.name}"
 
 
-class Interaction(models.Model):
-    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='event_interactions')
-    user = models.ForeignKey('User', on_delete=models.CASCADE, related_name='user_interactions')
-    interaction_date = models.DateTimeField(help_text="e.g., yyyy-mm-dd, HH:mm:ss")
-    interaction_type = models.CharField(max_length=2)
-
-    class Meta:
-        verbose_name = "Interaction"
-        verbose_name_plural = "Interactions"
-        db_table = "interaction"
-
-    def __str__(self):
-        return f"Interaction by {self.user} on {self.event} ({self.interaction_type}) at {self.interaction_date}"
-
-
-class Publication(models.Model):
-    description = models.CharField(max_length=27)
-
-    class Meta:
-        verbose_name = "Publication"
-        verbose_name_plural = "Publications"
-        db_table = "publication"
-
-    def __str__(self):
-        return f"{self.description}"
-
-
-class PublicationType(models.Model):
-    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='event_publication_types')
-    publication = models.ForeignKey(Publication, on_delete=models.CASCADE, related_name='publication_types')
-    address = models.FileField(upload_to='publication_files/')
-    
-    class Meta:
-        verbose_name = "Publication Type"
-        verbose_name_plural = "Publication Types"
-        db_table = "publication_type"
-
-    def __str__(self):
-        return f"Type for {self.publication}"
-
-
 class Repetition(models.Model):
-    board_publication = models.ForeignKey(BoardPublication, on_delete=models.CASCADE, related_name='publication_repetitions')
-    is_active = models.BooleanField(default=False)
+    board_publication = models.ForeignKey(BoardPublication, on_delete=models.CASCADE, related_name='repetitions_for_publication')
+    current_cycle = models.PositiveIntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+    repetition_count = models.PositiveIntegerField(default=0)
 
     class Meta:
         verbose_name = "Repetition"
         verbose_name_plural = "Repetitions"
         db_table = "repetition"
+
+    # Function to increment the current_cycle of the repetition_count
+    def increment_cycle(self):
+        if self.is_active:
+            self.current_cycle += 1
+            if self.repetition_count > 0 and self.current_cycle >= self.repetition_count:
+                self.is_active = False
+            self.save()
 
     def __str__(self):
         return f"Repetition for {self.board_publication} (Active: {self.is_active})"

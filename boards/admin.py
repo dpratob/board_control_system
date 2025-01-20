@@ -1,5 +1,5 @@
 from django.contrib import admin
-from boards.models import Board, BoardFeature, BoardPublication, Event, Group, Interaction, Publication, PublicationType, Repetition, User
+from boards.models import Board, BoardFeature, BoardPublication, Event, Group, Repetition, User
 
 @admin.register(Board)
 class AdminBoards(admin.ModelAdmin):
@@ -13,7 +13,7 @@ class AdminBoardFeature(admin.ModelAdmin):
 
 @admin.register(BoardPublication)
 class AdminBoardPublication(admin.ModelAdmin):
-    list_display = ('id', 'board', 'publication', 'date', 'time', 'duration',)
+    list_display = ('id', 'board', 'event', 'user', 'address', 'date', 'description', 'duration', 'interaction', 'time',)
 
 @admin.register(Event)
 class AdminPublication(admin.ModelAdmin):
@@ -23,21 +23,9 @@ class AdminPublication(admin.ModelAdmin):
 class AdminGroup(admin.ModelAdmin):
     list_display = ('id', 'name',)
 
-@admin.register(Interaction)
-class AdminGroup(admin.ModelAdmin):
-    list_display = ('id', 'event', 'user', 'interaction_date', 'interaction_type',)
-
-@admin.register(Publication)
-class AdminPublication(admin.ModelAdmin):
-    list_display = ('id', 'description',)
-
-@admin.register(PublicationType)
-class AdminPublicationType(admin.ModelAdmin):
-    list_display = ('id', 'event', 'publication', 'address',)
-
 @admin.register(Repetition)
 class AdminRepetition(admin.ModelAdmin):
-    list_display = ('id', 'board_publication', 'is_active',)
+    list_display = ('id', 'board_publication', 'current_cycle', 'is_active', 'repetition_count',)
 
 @admin.register(User)
 class AdminPublicationType(admin.ModelAdmin):

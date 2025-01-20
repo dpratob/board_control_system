@@ -8,9 +8,6 @@ urlpatterns = [
     path('board_publication/', include('boards.api.urls')),
     path('event/', include('boards.api.urls')),
     path('group/', include('boards.api.urls')),
-    path('interaction/', include('boards.api.urls')),
-    path('publication/', include('boards.api.urls')),
-    path('publication_type/', include('boards.api.urls')),
     path('repetition/', include('boards.api.urls')),
     path('user/', include('boards.api.urls')),
 ]
