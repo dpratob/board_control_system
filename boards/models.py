@@ -38,12 +38,20 @@ class BoardPublication(models.Model):
     event = models.ForeignKey('Event', on_delete=models.CASCADE, related_name='publications_with_event')
     user = models.ForeignKey('User', on_delete=models.CASCADE, related_name='publications_by_user')
     address = models.FileField(upload_to='publication_files/')
-    date = models.DateField(help_text="e.g., yyyy-mm-dd")
+    start_date = models.DateField(help_text="e.g., yyyy-mm-dd")
+    end_date = models.DateField(help_text="e.g., yyyy-mm-dd")
     description = models.CharField(max_length=27)
     duration = models.PositiveIntegerField(help_text="e.g., ___ min")
     interaction = models.URLField(max_length=18, help_text="e.g., http://example.com")
     time = models.TimeField(help_text="e.g., HH:mm:ss")
     
+    class Role(models.IntegerChoices):
+        DAILY_INFINITE = 0, 'Daily infinite'
+        SCHEDULED = 1, 'Scheduled with repetitions'
+        PERPETUAL = 2, 'Perpetual (user-controlled stop)'
+
+    role = models.PositiveSmallIntegerField(choices=Role.choices, default=Role.DAILY_INFINITE)
+
     class Meta:
         verbose_name = "Board Publication"
         verbose_name_plural = "Board Publications"
@@ -92,9 +100,8 @@ class Repetition(models.Model):
         verbose_name_plural = "Repetitions"
         db_table = "repetition"
 
-    # Function to increment the current_cycle of the repetition_count
     def increment_cycle(self):
-        if self.is_active:
+        if self.board_publication.role == BoardPublication.Role.SCHEDULED and self.is_active:
             self.current_cycle += 1
             if self.repetition_count > 0 and self.current_cycle >= self.repetition_count:
                 self.is_active = False

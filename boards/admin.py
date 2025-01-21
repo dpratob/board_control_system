@@ -13,7 +13,7 @@ class AdminBoardFeature(admin.ModelAdmin):
 
 @admin.register(BoardPublication)
 class AdminBoardPublication(admin.ModelAdmin):
-    list_display = ('id', 'board', 'event', 'user', 'address', 'date', 'description', 'duration', 'interaction', 'time',)
+    list_display = ('id', 'board', 'event', 'user', 'address', 'start_date', 'end_date', 'description', 'duration', 'interaction', 'time', 'role',)
 
 @admin.register(Event)
 class AdminPublication(admin.ModelAdmin):
