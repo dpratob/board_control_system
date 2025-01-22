@@ -1,7 +1,7 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from boards.models import Board, BoardFeature, BoardPublication, Event, Group, Repetition, User
-from boards.api.serializers import BoardSerializer, BoardFeatureSerializer, BoardPublicationSerializer, EventSerializer, GroupSerializer, RepetitionSerializer, UserSerializer
+from boards.models import Board, BoardFeature, BoardPublication, Event, Group, User
+from boards.api.serializers import BoardSerializer, BoardFeatureSerializer, BoardPublicationSerializer, EventSerializer, GroupSerializer, UserSerializer
 
 @api_view(['GET', 'POST'])
 def board_api_view(request):
@@ -256,57 +256,6 @@ def group_detail_api_view(request, pk=None):
         group = Group.objects.filter(id=pk).first()
         group.delete()
         return Response({'message': 'Group deleted successfully!'})
-
-
-@api_view(['GET', 'POST'])
-def repetition_api_view(request):
-
-    # Get all repetitions
-    if request.method == 'GET':
-        repetitions = Repetition.objects.all()
-        repetition_serializer = RepetitionSerializer(repetitions, many=True)
-        return Response(repetition_serializer.data)
-    
-    # Create a new repetition
-    elif request.method == 'POST':
-        repetition_serializer = RepetitionSerializer(data=request.data)
-        if repetition_serializer.is_valid():
-            repetition_serializer.save()
-            return Response(repetition_serializer.data)
-        return Response(repetition_serializer.errors)
-
-@api_view(['GET', 'PUT', 'PATCH', 'DELETE'])
-def repetition_detail_api_view(request, pk=None):
-    
-    # Get a single repetition
-    if request.method == 'GET':
-        repetition = Repetition.objects.filter(id=pk).first()
-        repetition_serializer = RepetitionSerializer(repetition)
-        return Response(repetition_serializer.data)
-    
-    # Update a single repetition completely
-    elif request.method == 'PUT':
-        repetition = Repetition.objects.filter(id=pk).first()
-        repetition_serializer = RepetitionSerializer(repetition, data=request.data)
-        if repetition_serializer.is_valid():
-            repetition_serializer.save()
-            return Response(repetition_serializer.data)
-        return Response(repetition_serializer.errors)
-    
-    # Update a single repetition partially
-    elif request.method == 'PATCH':
-        repetition = Repetition.objects.filter(id=pk).first()
-        repetition_serializer = RepetitionSerializer(repetition, data=request.data, partial=True)
-        if repetition_serializer.is_valid():
-            repetition_serializer.save()
-            return Response(repetition_serializer.data)
-        return Response(repetition_serializer.errors)
-    
-    # Delete a single repetition
-    elif request.method == 'DELETE':
-        repetition = Repetition.objects.filter(id=pk).first()
-        repetition.delete()
-        return Response({'message': 'Repetition deleted successfully!'})
 
 
 @api_view(['GET', 'POST'])

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from boards.models import Board, BoardFeature, BoardPublication, Event, Group, Repetition, User
+from boards.models import Board, BoardFeature, BoardPublication, Event, Group, User
 
 @admin.register(Board)
 class AdminBoards(admin.ModelAdmin):
@@ -13,7 +13,7 @@ class AdminBoardFeature(admin.ModelAdmin):
 
 @admin.register(BoardPublication)
 class AdminBoardPublication(admin.ModelAdmin):
-    list_display = ('id', 'board', 'event', 'user', 'address', 'start_date', 'end_date', 'description', 'duration', 'interaction', 'time', 'role',)
+    list_display = ('id', 'board', 'event', 'user', 'address', 'current_cycle', 'description', 'duration', 'end_date', 'interaction', 'is_active', 'repetition_count', 'start_date', 'time', 'role',)
 
 @admin.register(Event)
 class AdminPublication(admin.ModelAdmin):
@@ -22,10 +22,6 @@ class AdminPublication(admin.ModelAdmin):
 @admin.register(Group)
 class AdminGroup(admin.ModelAdmin):
     list_display = ('id', 'name',)
-
-@admin.register(Repetition)
-class AdminRepetition(admin.ModelAdmin):
-    list_display = ('id', 'board_publication', 'current_cycle', 'is_active', 'repetition_count',)
 
 @admin.register(User)
 class AdminPublicationType(admin.ModelAdmin):

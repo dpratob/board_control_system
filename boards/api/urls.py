@@ -5,7 +5,6 @@ from boards.api.api import (
     board_publication_api_view, board_publication_detail_api_view,
     event_api_view, event_detail_api_view,
     group_api_view, group_detail_api_view,
-    repetition_api_view, repetition_detail_api_view,
     user_api_view, user_detail_api_view
 )
 
@@ -30,10 +29,6 @@ urlpatterns = [
     # Group API
     path('group/', group_api_view, name = 'group_api'),
     path('group/<int:pk>/', group_detail_api_view, name = 'group_detail_api'),
-
-    # Repetition API
-    path('repetition/', repetition_api_view, name = 'repetition_api'),
-    path('repetition/<int:pk>/', repetition_detail_api_view, name = 'repetition_detail_api'),
 
     # User API
     path('user/', user_api_view, name = 'user_api'),
